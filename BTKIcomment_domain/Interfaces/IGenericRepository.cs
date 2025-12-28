@@ -1,20 +1,28 @@
 ﻿using BTKECommerce_domain.Entities.Base;
-using Microsoft.EntityFrameworkCore.Query;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BTKECommerce_Domain.Interfaces
+namespace BTKECommerce_domain.Interfaces
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
+
         //Create
         void Add(T entity);
+
         //Delete
         void Delete(T entity);
+
         //Update
+        Task<T> Update(T entity);
+
         //GetAll
-        Task<IEnumerable<T>> GetAll();
-        Task<IEnumerable<T>> GetAllAsyncWithInclude(Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpressions);
+        Task<IEnumerable<T>> GelAll();
+
         //Get
         Task<T> GetById(Guid Id);
-        T Update(T entity);
     }
 }
