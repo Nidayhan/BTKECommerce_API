@@ -1,7 +1,8 @@
 ﻿using BTKECommerce_domain.Data;
 using BTKECommerce_domain.Entities.Base;
-using BTKECommerce_domain.Interfaces;
+using BTKECommerce_Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BTKECommerce_Infrastructure.Repository
 {
@@ -18,24 +19,27 @@ namespace BTKECommerce_Infrastructure.Repository
         public void Add(T entity)
         {
             _dbSet.Add(entity);
-            _context.SaveChanges();
 
         }
 
         public void Delete(T entity)
         {
             _dbSet.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        public Task<IEnumerable<T>> GelAll()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
             return await _dbSet.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsyncWithInclude(Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpressions)
+        {
+            IQueryable<T> query = _dbSet.AsQueryable();
+            if (includeExpressions != null)
+            {
+                query = includeExpressions(query);
+            }
+            return await query.ToListAsync();
         }
 
         public async Task<T> GetById(Guid Id)
@@ -47,13 +51,7 @@ namespace BTKECommerce_Infrastructure.Repository
         public T Update(T entity)
         {
             _dbSet.Update(entity);
-            _context.SaveChanges();
             return entity;
-        }
-
-        Task<T> IGenericRepository<T>.Update(T entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

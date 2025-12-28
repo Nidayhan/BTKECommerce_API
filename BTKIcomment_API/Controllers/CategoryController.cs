@@ -1,9 +1,6 @@
 ﻿using BTKECommerce_core.DTOs.Category;
-using BTKECommerce_core.Models;
 using BTKECommerce_core.Services.Abstract;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.X509Certificates;
 
 namespace BTKECommerce_API.Controllers
 {
