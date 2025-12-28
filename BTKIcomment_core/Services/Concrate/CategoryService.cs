@@ -23,7 +23,7 @@ namespace BTKECommerce_Core.Services.Concrete
         {
             BaseResponseModel<bool> response = new BaseResponseModel<bool>();
             var objDTO = _mapper.Map<Category>(model);
-            categoryRepository.Add(objDTO);
+            _unitOfWork.Categories.Add(objDTO);
             response.Data = true;
             response.Message = Messages.SuccessCreateCategory;
             response.Success = true;
@@ -37,8 +37,8 @@ namespace BTKECommerce_Core.Services.Concrete
             try
             {
                 //var obj = _context.Categories.FirstOrDefault(x => x.Id == Id);
-                var obj = await categoryRepository.GetById(Id);
-                categoryRepository.Delete(obj);
+                var obj = await _unitOfWork.Categories.GetById(Id);
+                _unitOfWork.Categories.Delete(obj);
                 return new BaseResponseModel<bool>
                 {
                     Data = true,
@@ -59,7 +59,7 @@ namespace BTKECommerce_Core.Services.Concrete
 
         public async Task<BaseResponseModel<List<Category>>> GetCategories()
         {
-            var list = categoryRepository.GetAll().Result.ToList();
+            var list = _unitOfWork.Categories.GetAll().Result.ToList();
             return new BaseResponseModel<List<Category>>
             {
                 Data = list
@@ -74,7 +74,7 @@ namespace BTKECommerce_Core.Services.Concrete
             //Bulduğumuz kaydı döneceğiz.
             return new BaseResponseModel<Category>
             {
-                Data = await categoryRepository.GetById(Id)
+                Data = await _unitOfWork.Categories.GetById(Id)
             };
 
         }
@@ -82,11 +82,11 @@ namespace BTKECommerce_Core.Services.Concrete
         public async Task<BaseResponseModel<Category>> UpdateCategory(Guid Id, CategoryDTO model)
         {
             //Önce parametreden gelen id'yi için Categories tablosundaki eşleşen kaydı bulacağız.
-            Category category = await categoryRepository.GetById(Id);
+            Category category = await _unitOfWork.Categories.GetById(Id);
             //mevcut verileri parametreden gelen güncel veriler ile güncelleyeceğiz.
             _mapper.Map(model, category);
             //context'e güncel nesneyi kaydedeceğiz.
-            categoryRepository.Update(category);
+            _unitOfWork.Categories.Update(category);
             //veritabanına değişiklikleri kaydedeceğiz.
             return new BaseResponseModel<Category>
             {

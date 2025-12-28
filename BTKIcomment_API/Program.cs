@@ -1,3 +1,4 @@
+using BTKECommerce_core.DTOs.Category;
 using BTKECommerce_core.Maper;
 using BTKECommerce_core.Services.Abstract;
 using BTKECommerce_Core.Services.Concrete;
@@ -19,6 +20,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(BaseResponseModel<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 
 
