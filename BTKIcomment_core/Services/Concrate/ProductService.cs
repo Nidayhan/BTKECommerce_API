@@ -32,6 +32,9 @@ namespace BTKECommerce_Core.Services.Concrete
                     return response;
                 }
                 response.Message = Messages.FailCreateProduct;
+                response.Data = false;
+                response.Success = false;
+                return response;
 
             }
             catch (Exception ex)

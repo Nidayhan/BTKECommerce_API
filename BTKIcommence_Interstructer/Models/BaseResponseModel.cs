@@ -11,5 +11,7 @@ namespace BTKECommerce_Infrastructure.Models
         public T Data { get; set; }
         public string Message { get; set; } = string.Empty;
         public bool Success { get; set; } = false;
+
+        public List<string> ErrorMessages { get; set; } = new List<string>();
     }
 }

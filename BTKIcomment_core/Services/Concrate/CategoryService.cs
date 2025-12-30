@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Azure;
 using BTKECommerce_core.DTOs.Category;
 using BTKECommerce_core.Services.Abstract;
 using BTKECommerce_Core.Constants;
 using BTKECommerce_domain.Entities;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.UoW;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BTKECommerce_Core.Services.Concrete
 {
@@ -13,22 +17,43 @@ namespace BTKECommerce_Core.Services.Concrete
 
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryService(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IValidator<CategoryDTO> _validator;
+        public CategoryService(IMapper mapper, IUnitOfWork unitOfWork, IValidator<CategoryDTO> _validator)
         {
+            this._validator = _validator;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public BaseResponseModel<bool> CreateCategory(CategoryDTO model)
+        public async Task<BaseResponseModel<bool>> CreateCategory(CategoryDTO model)
         {
             BaseResponseModel<bool> response = new BaseResponseModel<bool>();
+            List<string> errorMessages = new();
+            var result = _validator.Validate(model);
+            if (result.IsValid)
+            {
+                response.Data = false;
+                response.Message = Messages.FailCreateCategory;
+                response.Success = false;
+                errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+                response.ErrorMessages = errorMessages;
+                return response;
+            }
+            
             var objDTO = _mapper.Map<Category>(model);
             _unitOfWork.Categories.Add(objDTO);
-            response.Data = true;
-            response.Message = Messages.SuccessCreateCategory;
-            response.Success = true;
-            return response;
+            if(await _unitOfWork.SaveChangesAsync() > 0)
+            {
+                response.Data = true;
+                response.Message = Messages.SuccessCreateCategory;
+                response.Success = true;
+                return response;
+            }
 
+            response.Data = false;
+            response.Message = Messages.FailCreateCategory;
+            response.Success = false;
+            return response;
 
         }
 
@@ -39,10 +64,18 @@ namespace BTKECommerce_Core.Services.Concrete
                 //var obj = _context.Categories.FirstOrDefault(x => x.Id == Id);
                 var obj = await _unitOfWork.Categories.GetById(Id);
                 _unitOfWork.Categories.Delete(obj);
+                if (await _unitOfWork.SaveChangesAsync() <= 0)
+                {
+                    return new BaseResponseModel<bool>
+                    {
+                        Data = true,
+                        Success = true
+                    };
+                }
                 return new BaseResponseModel<bool>
                 {
-                    Data = true,
-                    Success = true
+                    Data = false,
+                    Success = false
                 };
             }
             catch (Exception ex)
@@ -79,6 +112,22 @@ namespace BTKECommerce_Core.Services.Concrete
 
         }
 
+        public async Task<BaseResponseModel<List<Category>>> GetProductsByCategory()
+        {
+            BaseResponseModel<List<Category>> response = new BaseResponseModel<List<Category>>();
+            var result =await _unitOfWork.Categories.GetAllAsyncWithInclude(x => x.Include(x => x.Products));
+            if (result.Count() > 0)
+            {
+                response.Data = result.ToList();
+                response.Success = true;
+                return response;
+            }
+            response.Data = new List<Category>();
+            response.Message = Messages.NoDataFound;
+            response.Success = true;
+            return response;
+        }
+
         public async Task<BaseResponseModel<Category>> UpdateCategory(Guid Id, CategoryDTO model)
         {
             //Önce parametreden gelen id'yi için Categories tablosundaki eşleşen kaydı bulacağız.
@@ -88,18 +137,22 @@ namespace BTKECommerce_Core.Services.Concrete
             //context'e güncel nesneyi kaydedeceğiz.
             _unitOfWork.Categories.Update(category);
             //veritabanına değişiklikleri kaydedeceğiz.
+            if (await _unitOfWork.SaveChangesAsync() > 0)
+            {
+                return new BaseResponseModel<Category>
+                {
+                    Data = category,
+                    Success = true,
+                    Message = Messages.SaveChangesSuccess
+                };
+            }
             return new BaseResponseModel<Category>
             {
-                Data = category,
-                Message = Messages.SaveChangesSuccess,
-                Success = true
+                Data = new Category(),
+                Message = Messages.SaveChangesFail,
+                Success = false
             };
-            //return new BaseResponseModel<Category>
-            //{
-            //    Data = null,
-            //    Success = false,
-            //    Message = Messages.SaveChangesFail
-            //};
+            
 
         }
 

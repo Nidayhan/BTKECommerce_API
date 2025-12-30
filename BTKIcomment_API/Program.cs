@@ -7,6 +7,7 @@ using BTKECommerce_Domain.Interfaces;
 using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.Repository;
 using BTKECommerce_Infrastructure.UoW;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(BaseResponseModel<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddValidatorsFromAssemblyContaining<CategoryDTO>();
 
 
 
@@ -42,6 +44,7 @@ builder.Services.AddAutoMapper(cfg =>
 #endregion
 #region DI
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 #endregion
 
 

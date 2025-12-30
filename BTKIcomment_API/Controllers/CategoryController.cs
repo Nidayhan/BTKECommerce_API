@@ -18,14 +18,14 @@ namespace BTKECommerce_API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            return Ok(_categoryService.GetCategories());
+            return Ok(await _categoryService.GetProductsByCategory());
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CategoryDTO model)
         {
-            var categories = _categoryService.CreateCategory(model);
-            return Ok(categories);
+            var isSaveChanges =await  _categoryService.CreateCategory(model);
+            return Ok(isSaveChanges);
         }
 
         [HttpDelete]
@@ -43,7 +43,7 @@ namespace BTKECommerce_API.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetCategoryById([FromRoute] int Id)
+        public async Task<IActionResult> GetCategoryById([FromRoute] Guid Id)
         {
             var category = _categoryService.GetCategoryById(Id);
             return Ok(category);
