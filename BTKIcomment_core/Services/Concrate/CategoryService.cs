@@ -8,7 +8,6 @@ using BTKECommerce_Infrastructure.Models;
 using BTKECommerce_Infrastructure.UoW;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace BTKECommerce_Core.Services.Concrete
 {
@@ -30,7 +29,7 @@ namespace BTKECommerce_Core.Services.Concrete
             BaseResponseModel<bool> response = new BaseResponseModel<bool>();
             List<string> errorMessages = new();
             var result = _validator.Validate(model);
-            if (result.IsValid)
+            if (!result.IsValid)
             {
                 response.Data = false;
                 response.Message = Messages.FailCreateCategory;

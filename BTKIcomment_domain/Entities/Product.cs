@@ -1,11 +1,7 @@
 ﻿using BTKECommerce_domain.Entities.Base;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+
+using System.Text.Json.Serialization;
 
 namespace BTKECommerce_domain.Entities
 {
@@ -24,6 +20,8 @@ namespace BTKECommerce_domain.Entities
         public decimal Price { get; set; }
 
         public Guid CategoryId { get; set; }
+
+        [JsonIgnore]
         public Category Category { get; set; }
 
     }
