@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BTKECommerce_Domain.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260104092950_addedLogCs")]
-    partial class addedLogCs
+    [Migration("20260109104913_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
