@@ -17,6 +17,13 @@ namespace BTKECommerce_Core.Constants
         public static string SuccessCreateProduct = "Ürün başarıyla eklendi.";
         public static string FailCreateProduct = "Ürün eklenirken bir hata oluştu.";
 
-        public static string NoDataFound = "No data found.";
+        public static string NoDataFound = "Veriler Bulunamadı.";
+
+        public static string InvalidImage = "Ürün resmi başarıyla eklendi.";
+
+        public static string UnsupportedMediaType = "Desteklenmeyen Dosya Tipi.";
+
+        public static string SuccessCreateProductImage = "Ürün Resmi başarıyla eklendi.";
+
     }
 }

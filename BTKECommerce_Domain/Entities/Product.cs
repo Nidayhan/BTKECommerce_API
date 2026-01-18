@@ -21,6 +21,7 @@ namespace BTKECommerce_Domain.Entities
         public Guid CategoryId { get; set; }
         [JsonIgnore]
         public Category Category { get; set; }
+        public virtual ICollection<ProductImage> ProductImages { get; set; }
     }
 
     /* 
