@@ -27,7 +27,7 @@ namespace BTKECommerce_Core.Services.Concrete
             {
                 var obj = _mapper.Map<Product>(model);
                 _unitOfWork.Products.Add(obj);
-                if(await _unitOfWork.SaveChangesAsync() > 0)
+                if (await _unitOfWork.SaveChangesAsync() > 0)
                 {
                     response.Message = Messages.SuccessCreateProduct;
                     response.Data = true;
@@ -47,5 +47,35 @@ namespace BTKECommerce_Core.Services.Concrete
                 return response;
             }
         }
+
+        public async Task<BaseResponseModel<IEnumerable<ProductDTO>>> GetProducts(Guid categoryId)
+        {
+            if (categoryId.ToString().StartsWith("000"))
+            {
+                BaseResponseModel<IEnumerable<ProductDTO>> responseModel = new();
+                var products = await _unitOfWork.Products.GetAllAsyncExpression(
+                    null, null
+                    );
+                var productDTO = _mapper.Map<IEnumerable<ProductDTO>>(products);
+                responseModel.Success = true;
+                responseModel.Message = "Products Retrieved Succesfully";
+                responseModel.Data = productDTO;
+                return responseModel;
+            }
+            else
+            {
+                BaseResponseModel<IEnumerable<ProductDTO>> responseModel = new();
+                var products = await _unitOfWork.Products.GetAllAsyncExpression(
+                    predicate: p => p.CategoryId == categoryId, null
+                    );
+                var productDTO = _mapper.Map<IEnumerable<ProductDTO>>(products);
+                responseModel.Success = true;
+                responseModel.Message = "Products Retrieved Succesfully";
+                responseModel.Data = productDTO;
+                return responseModel;
+
+            }
+        }
+
     }
 }

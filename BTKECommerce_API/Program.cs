@@ -34,7 +34,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddValidatorsFromAssemblyContaining<CategoryDTO>();
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+{
+    builder.WithOrigins("http://localhost:3000")
+           .AllowAnyMethod()
+           .AllowAnyHeader().AllowCredentials();
+}));
 
 builder.Services.AddDomainServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
@@ -161,5 +166,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<LoggingMiddleware>();
 app.MapControllers();
-
+app.UseCors("MyPolicy");
 app.Run();

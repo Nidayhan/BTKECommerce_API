@@ -18,10 +18,16 @@ namespace BTKECommerce_API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductDTO productDTO)
         {
-            var result = _productService.CreateProduct(productDTO);
+            var result = await _productService.CreateProduct(productDTO);
             return Ok(result);
         }
+        [HttpGet("GetProductsByCategoryId")]
+        public async Task<IActionResult> GetProductsByCategoryId(Guid categoryId)
+        {
+            var result = await _productService.GetProducts(categoryId);
+            return Ok(result);
 
+        }
 
     }
 }

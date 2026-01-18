@@ -3,6 +3,7 @@ using BTKECommerce_Domain.Entities.Base;
 using BTKECommerce_Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace BTKECommerce_Infrastructure.Repository
 {
@@ -19,7 +20,7 @@ namespace BTKECommerce_Infrastructure.Repository
         public void Add(T entity)
         {
             _dbSet.Add(entity);
-            
+
         }
 
         public void Delete(T entity)
@@ -32,10 +33,29 @@ namespace BTKECommerce_Infrastructure.Repository
             return await _dbSet.ToListAsync();
         }
 
+        public async Task<IEnumerable<T>> GetAllAsyncExpression(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpressions, bool asNoTracking = false)
+        {
+            IQueryable<T> query = _dbSet;
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+            if (includeExpressions != null)
+            {
+                query = includeExpressions(query);
+            }
+
+            return await query.ToListAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAllAsyncWithInclude(Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpressions)
         {
             IQueryable<T> query = _dbSet.AsQueryable();
-            if(includeExpressions != null)
+            if (includeExpressions != null)
             {
                 query = includeExpressions(query);
             }

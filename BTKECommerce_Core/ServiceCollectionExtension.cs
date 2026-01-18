@@ -36,6 +36,7 @@ namespace BTKECommerce_Core
                 cfg.AddProfile<MappingProfile>();
             });
             #endregion
+
             #region DI
             services.AddScoped<ILogService,LogService>();
             services.AddScoped<ICategoryService, CategoryService>();

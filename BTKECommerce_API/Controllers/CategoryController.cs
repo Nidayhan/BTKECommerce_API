@@ -24,7 +24,7 @@ namespace BTKECommerce_API.Controllers
 
    
 
-        [HttpGet]
+        [HttpGet("GetAllCategories")]
         public async Task<IActionResult> GetCategories()
         {
             return Ok(await _categoryService.GetProductsByCategory());
