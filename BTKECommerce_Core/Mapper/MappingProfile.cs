@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BTKECommerce_Core.DTOs.Basket;
 using BTKECommerce_Core.DTOs.Category;
 using BTKECommerce_Core.DTOs.Product;
 using BTKECommerce_Core.DTOs.ProductImage;
@@ -23,6 +24,9 @@ namespace BTKECommerce_Core.Mapper
             CreateMap<ProductImage, ProductImageDTO>().ReverseMap();
             #endregion
 
+            CreateMap<Basket, BasketDTO>().ReverseMap();
+            CreateMap<BasketItem, BasketItemResponseDTO>().ReverseMap();
+            CreateMap<Basket, BasketResponseDTO>().ReverseMap();
         }
     }
 }

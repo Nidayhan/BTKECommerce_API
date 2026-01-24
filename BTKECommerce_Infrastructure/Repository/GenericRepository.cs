@@ -62,6 +62,25 @@ namespace BTKECommerce_Infrastructure.Repository
             return await query.ToListAsync();
         }
 
+        public async Task<T> GetAllExpression(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>> includeExpressions, bool asNoTracking = false)
+        {
+            IQueryable<T> query = _dbSet;
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+            if (includeExpressions != null)
+            {
+                query = includeExpressions(query);
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<T> GetById(Guid Id)
         {
             var query = _dbSet.AsQueryable();

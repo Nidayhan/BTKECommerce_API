@@ -22,11 +22,10 @@ namespace BTKECommerce_Domain.Entities
         [JsonIgnore]
         public Category Category { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<BasketItem> BasketItems { get; set; }
     }
 
-    /* 
-     * 
-     * happy coding :)
-     * 
-     */
+   
 }

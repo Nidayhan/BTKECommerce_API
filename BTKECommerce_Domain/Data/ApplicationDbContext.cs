@@ -15,5 +15,8 @@ namespace BTKECommerce_Domain.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<AppLog> AppLogs { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+
+        public DbSet<Basket> Baskets { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
     }
 }

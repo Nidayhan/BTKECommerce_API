@@ -18,6 +18,11 @@ namespace BTKECommerce_Domain.Interfaces
         Task<IEnumerable<T>> GetAllAsyncExpression( Expression<Func<T, bool>>
             predicate, Func<IQueryable<T>, IIncludableQueryable<T, object>>? includeExpressions, bool asNoTracking = false
             );
+
+        Task<T> GetAllExpression(Expression<Func<T, bool>> predicate, Func<IQueryable<T>,
+              IIncludableQueryable<T, object>> includeExpressions, bool asNoTracking = false);
+        //Get
+
         Task<T> GetById(Guid Id);
         T Update(T entity);
     }

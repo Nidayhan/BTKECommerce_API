@@ -13,6 +13,9 @@ namespace BTKECommerce_Domain.Entities
         public string Description { get; set; }
 
         public string CreatedBy { get; set; }
+
+        public string? Test { get; set; }
+
         //Navigation Property
         public ICollection<Product> Products { get; set; }
     }
