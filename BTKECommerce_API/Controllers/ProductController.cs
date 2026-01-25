@@ -17,7 +17,7 @@ namespace BTKECommerce_API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(ProductDTO productDTO)
+        public async Task<IActionResult> CreateProduct(ProductRequestDTO productDTO)
         {
             var result = await _productService.CreateProduct(productDTO);
             return Ok(result);

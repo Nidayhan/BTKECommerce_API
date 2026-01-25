@@ -13,6 +13,8 @@ namespace BTKECommerce_Core.Mapper
         {
             #region Product Mappings
             CreateMap<ProductDTO, Product>().ReverseMap();
+            CreateMap<ProductRequestDTO, Product>().ReverseMap();
+
             #endregion
 
             #region Category Mappings

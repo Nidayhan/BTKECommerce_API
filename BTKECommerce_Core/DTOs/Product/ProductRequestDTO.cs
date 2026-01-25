@@ -1,17 +1,13 @@
-﻿using BTKECommerce_Core.DTOs.ProductImage;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BTKECommerce_Core.DTOs.Product
 {
-    public class ProductDTO
+    public class ProductRequestDTO
     {
-        public Guid Id { get; set; }
-
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
 
@@ -19,7 +15,5 @@ namespace BTKECommerce_Core.DTOs.Product
         public int StockAmount { get; set; }
         public decimal Price { get; set; }
         public Guid CategoryId { get; set; }
-
-        public List<ProductImageDTO> ProductImages { get; set; }
     }
 }

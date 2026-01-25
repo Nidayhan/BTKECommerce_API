@@ -8,7 +8,7 @@ namespace BTKECommerce_Core.Services.Abstract
 {
     public interface IProductService
     {
-        Task<BaseResponseModel<bool>> CreateProduct(ProductDTO model);
+        Task<BaseResponseModel<bool>> CreateProduct(ProductRequestDTO model);
         Task<BaseResponseModel<IEnumerable<ProductDTO>>> GetProducts(Guid categoryId);
         Task<BaseResponseModel<ProductImageDTO>> AddProductImage(Guid Id, AddProductImageDTO productImageDTO);
     }
