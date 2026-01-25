@@ -36,7 +36,14 @@ namespace BTKECommerce_Core.Services.Concrete
                 Basket basketObj = new()
                 {
                     UserId = basketDTO.UserId,
-                    Items = new List<BasketItem>()
+                    Items = new List<BasketItem>
+                    {
+                        new BasketItem
+                        {
+                            ProductId = basketDTO.ProductId,
+                            Quantity = basketDTO.Quantity
+                        }
+                    }
                 };
                 _unitOfWork.Baskets.Add(basketObj);
             }
