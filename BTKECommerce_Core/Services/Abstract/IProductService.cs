@@ -11,5 +11,6 @@ namespace BTKECommerce_Core.Services.Abstract
         Task<BaseResponseModel<bool>> CreateProduct(ProductRequestDTO model);
         Task<BaseResponseModel<IEnumerable<ProductDTO>>> GetProducts(Guid categoryId);
         Task<BaseResponseModel<ProductImageDTO>> AddProductImage(Guid Id, AddProductImageDTO productImageDTO);
+
     }
 }
